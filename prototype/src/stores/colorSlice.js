@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [],
+  value: '',
 };
 
 const randomRgb = () => {
@@ -17,7 +17,7 @@ export const colorSlice = createSlice({
   initialState,
   reducers: {
     setColor: (state) => {
-      state.value = [...state.value, randomRgb()];
+      state.value = randomRgb();
     },
   },
 });
