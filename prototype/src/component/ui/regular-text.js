@@ -2,13 +2,13 @@ import { useCallback } from 'react';
 import {View, Text, StyleSheet} from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { wScale } from '../utils/scaling';
+import { wScale } from '../../utils/scaling';
 
 export default function Label({ children, style }) {
   const [fontsLoaded, fontError] = useFonts({
-    'Pretendard-Regular': require('../assets/fonts/Pretendard-Regular.ttf'),
-    'Pretendard-Bold': require('../assets/fonts/Pretendard-Bold.ttf'),
-    'Pretendard-ExtraBold': require('../assets/fonts/Pretendard-ExtraBold.ttf'),
+    'Pretendard-Regular': require('../../assets/fonts/Pretendard-Regular.ttf'),
+    'Pretendard-Bold': require('../../assets/fonts/Pretendard-Bold.ttf'),
+    'Pretendard-ExtraBold': require('../../assets/fonts/Pretendard-ExtraBold.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {

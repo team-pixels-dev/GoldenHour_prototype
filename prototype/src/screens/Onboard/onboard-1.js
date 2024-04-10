@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
-import RegularText from '../../component/regular-text'
+import RegularText from '../../component/ui/regular-text'
 
 import {useDispatch, useSelector} from "react-redux";
 
