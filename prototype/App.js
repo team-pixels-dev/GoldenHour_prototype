@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import {store} from './src/store';
 
-import Onboard_1 from "./src/screens/Onboard/Onboard_1";
+import Onboard_1 from "./src/screens/Onboard/onboard-1";
 
 function App() {
 
