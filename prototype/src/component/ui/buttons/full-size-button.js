@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, Image, Button, ViewBase, Pressable } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../../utils/scaling';
 import RegularText from '../../../component/ui/regular-text'
 
 export default function fullSizeButton({style, onPress}){
     return (
-        <Pressable style={[styles.base, style]} onPress={onPress}><RegularText style={[styles.font, style]} >시작하기</RegularText></Pressable>
+        <TouchableOpacity style={[styles.base, style]} onPress={onPress}><RegularText style={[styles.font, style]} >시작하기</RegularText></TouchableOpacity>
          
     )
 }
