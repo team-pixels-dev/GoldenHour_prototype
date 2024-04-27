@@ -22,12 +22,9 @@ export default function Onboard_1() {
     }
     return(
         <View style={[styles.continer, {backgroundColor:color}]}>
-            {/* <Image style={styles.clock_image} source={clock}/> */}
             <RegularText style={styles.script}>늦지 않게 해드릴게요!</RegularText>
             <Button onPress={() => dispatch(setColor())} title='이걸 누르면 색깔이 막 바뀌어용!'></Button>
-            <FullSizeButton onPress={Hibtn}/>
-            {/* <RegularText>{number}</RegularText>
-            <Button onPress={() => dispatch(plusNumber())} title='이걸 누르면 숫자가 증가해요!'></Button> */}
+            <FullSizeButton onPress={Hibtn}>시작하기</FullSizeButton>
         </View>
     )
 }
