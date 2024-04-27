@@ -1,13 +1,16 @@
-import { StyleSheet, Text, View, Image, Button, ViewBase, Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../../utils/scaling';
+import Button from './animated-pressable';
 import RegularText from '../../../component/ui/regular-text'
 
-export default function fullSizeButton({style, onPress}){
+export default function fullSizeButton({style, children, onPress}){
     return (
-        <Pressable style={[styles.base, style]} onPress={onPress}><RegularText style={[styles.font, style]} >시작하기</RegularText></Pressable>
-         
+        <Button style={[styles.base, style]} onPress={onPress}>
+                <RegularText style={[styles.font, style]} >{children}</RegularText>
+        </Button>
     )
 }
+
 const styles = StyleSheet.create({
     base: {
       height: hScale(62),
