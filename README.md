@@ -27,3 +27,7 @@ react-redux@9.1.0
 react@18.2.0
 
 redux@5.0.1
+
+npx 모듈 리스트
+
+react-native-reanimated
