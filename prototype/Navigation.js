@@ -12,7 +12,7 @@ function Navigation(){
     return(
         <NavigationContainer>
             <Stack.Navigator initialRouterName = 'onboard_1'>
-                <Stack.Screen options={{ headerShown: false }} name="onboard_1" component={Onboard_1}/>
+                <Stack.Screen options={{ headerShown: false }} name="Onboard_1" component={Onboard_1}/>
                 <Stack.Screen options={{ headerShown: false }} name="Onboard_2" component={Onboard_2}/>
             </Stack.Navigator>
         </NavigationContainer>

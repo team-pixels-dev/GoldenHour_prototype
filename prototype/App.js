@@ -16,27 +16,15 @@ function App() {
   return (
     // redux setting
     
-      <View style={styles.container}>
-        <StatusBar style="auto"/>
-        <Navigation/>
-      </View>
-      
+    <Navigation/>
   );
 }
 
 export default () => {
   return(
     <Provider store={store}>
+      <StatusBar style="auto"/>
       <App/>
     </Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
