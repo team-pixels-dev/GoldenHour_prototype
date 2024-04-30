@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { wScale } from '../../utils/scaling';
 
+/** 폰트 적용을 위해 커스텀한 Text 컴포넌트 */
 export default function Label({ children, style }) {
   const [fontsLoaded, fontError] = useFonts({
     'Pretendard-Regular': require('../../assets/fonts/Pretendard-Regular.ttf'),

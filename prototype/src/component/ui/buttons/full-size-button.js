@@ -3,6 +3,7 @@ import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../../utils/scalin
 import CustomAnimatedPressable from './animated-pressable';
 import RegularText from '../../../component/ui/regular-text'
 
+/** 큰 사이즈의 버튼, 애니메이션과 폰트가 적용됨 */
 export default function fullSizeButton({style, children, onPress}){
     return (
         <CustomAnimatedPressable style={[styles.base, style]} onPress={onPress}>
