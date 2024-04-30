@@ -26,4 +26,22 @@ react-redux@9.1.0
 
 react@18.2.0
 
+@react-navigation/native
+
 redux@5.0.1
+
+@react-navigation/bottom-tabs
+
+@react-navigation/stack
+
+@react-navigation/material-top-tabs react-native-tab-view
+
+npx 모듈 리스트
+
+react-native-screens react-native-safe-area-context
+
+react-native-reanimated
+
+react-native-pager-view
+
+react-native-gesture-handler
