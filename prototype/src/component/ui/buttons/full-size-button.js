@@ -1,13 +1,14 @@
 import { StyleSheet, Pressable } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../../utils/scaling';
-import Button from './animated-pressable';
+import CustomAnimatedPressable from './animated-pressable';
 import RegularText from '../../../component/ui/regular-text'
 
+/** 큰 사이즈의 버튼, 애니메이션과 폰트가 적용됨 */
 export default function fullSizeButton({style, children, onPress}){
     return (
-        <Button style={[styles.base, style]} onPress={onPress}>
+        <CustomAnimatedPressable style={[styles.base, style]} onPress={onPress}>
                 <RegularText style={[styles.font, style]} >{children}</RegularText>
-        </Button>
+        </CustomAnimatedPressable>
     )
 }
 
