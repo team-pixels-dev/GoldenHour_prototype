@@ -9,6 +9,8 @@ import {store} from './src/store';
 
 import Onboard_1 from "./src/screens/Onboard/onboard-1";
 
+import Navigation from "./Navigation";
+
 function App() {
 
   return (
@@ -16,8 +18,9 @@ function App() {
     
       <View style={styles.container}>
         <StatusBar style="auto"/>
-        <Onboard_1/>
+        <Navigation/>
       </View>
+      
   );
 }
 
