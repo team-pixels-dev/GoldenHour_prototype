@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
 import RegularText from '../../component/ui/regular-text'
@@ -10,8 +9,9 @@ export default function Onboard_1() {
     const navigation = useNavigation();
     return(
         <View style={styles.continer}>
-            <RegularText style={styles.script}>늦지 않게 해드릴게요!</RegularText>
-            <FullSizeButton onPress={() => navigation.navigate('Onboard_2')} children="시작하기"/>
+            <RegularText style={styles.script}>굿굿</RegularText>
+            <RegularText style={styles.script2}>제 시간에 도착하셨네요 !</RegularText>
+            <FullSizeButton onPress={() => navigation.navigate('Disappoint')} children="완료"/>
         </View>
     )
 }
@@ -28,5 +28,9 @@ const styles = StyleSheet.create({
     script:{
         fontFamily:'Pretendard-Bold',
         marginTop:hScale(300)
+    },
+    script2:{
+        fontFamily:'Pretendard-Bold',
+        marginTop:hScale(10)
     }
 });

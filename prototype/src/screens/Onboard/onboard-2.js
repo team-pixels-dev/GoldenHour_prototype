@@ -6,20 +6,29 @@ import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
+import { useDispatch, useSelector } from 'react-redux';
+import { setArrival, setDeparture } from '../../stores/time-select-slice';
+
 export default function Onboard_2() {
+    const dispatch = useDispatch();
+
     const navigation = useNavigation();
     const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('time');
-    const [arrival,setArrival] = useState();
-    const [departure,setDeparture] = useState();
+    const arrival = useSelector((state) => state.time.arrival);
+    const departure = useSelector((state) => state.time.departure);
+
 
     const arrivalChange = (event, selectedTime) => {
-        setArrival(selectedTime.toLocaleTimeString())
-        console.log(arrival)
+        if (selectedTime){
+            const formattedTime = selectedTime.toLocaleTimeString();
+            dispatch(setArrival(formattedTime))
+        }
     }
     const departureChange = (event, selectedTime) => {
-        setDeparture(selectedTime.toLocaleTimeString())
-        console.log(departure)
+        if (selectedTime){
+            const formattedTime = selectedTime.toLocaleTimeString();
+            dispatch(setDeparture(formattedTime))
+        }
     }
 
     
@@ -29,7 +38,7 @@ export default function Onboard_2() {
             <DateTimePicker style={styles.picker}value={date} mode={'time'} onChange={arrivalChange} is24Hour={true}/>
             <RegularText style={styles.script}>이동 출발시각 설정</RegularText>
             <DateTimePicker style={styles.picker}value={date} mode='time' onChange={departureChange}is24Hour={true}/>
-            <FullSizeButton onPress={() => navigation.navigate('Onboard_1')}children='다음'/>
+            <FullSizeButton onPress={() => navigation.navigate('Praise')}children='다음'/>
         </View>
     )
 }
@@ -41,8 +50,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     script:{
-        fontWeight:'700',
-        marginTop:hScale(75)
+        marginTop:hScale(75),
+        fontFamily:'Pretendard-Bold',
+        fontSize:hScale(25)
     },
     picker:{
         marginTop:hScale(40),
