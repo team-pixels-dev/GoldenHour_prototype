@@ -23,8 +23,8 @@ export default function Onboard_1() {
     return(
         <View style={[styles.continer, {backgroundColor:color}]}>
             <RegularText style={styles.script}>늦지 않게 해드릴게요!</RegularText>
-            <Button onPress={() => dispatch(setColor())} title='이걸 누르면 색깔이 막 바뀌어용!'></Button>
-            <FullSizeButton onPress={() => navigation.navigate('Onboard_2')} children="시작하기"/>
+            {/* <Button onPress={() => dispatch(setColor())} title='이걸 누르면 색깔이 막 바뀌어용!'></Button> */}
+            <FullSizeButton onPress={() => navigation.navigate('Onboard_2')} style={styles.button}>시작하기</FullSizeButton>
         </View>
     )
 }
@@ -39,6 +39,11 @@ const styles = StyleSheet.create({
 
     script:{
         fontFamily:'Pretendard-Bold',
-        marginTop:hScale(300)
+        // marginTop:hScale(300)
+    },
+    
+    button:{
+        position:'absolute',
+        bottom:hScale(75)
     }
 });

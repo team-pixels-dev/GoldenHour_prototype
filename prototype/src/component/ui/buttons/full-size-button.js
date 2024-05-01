@@ -7,7 +7,7 @@ import RegularText from '../../../component/ui/regular-text'
 export default function fullSizeButton({style, children, onPress}){
     return (
         <CustomAnimatedPressable style={[styles.base, style]} onPress={onPress}>
-                <RegularText style={[styles.font, style]} >{children}</RegularText>
+                <RegularText style={[styles.font]}>{children}</RegularText>
         </CustomAnimatedPressable>
     )
 }
@@ -19,8 +19,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#FFF500",
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius:wScale(38.5),
-      marginTop: hScale(250)
+      borderRadius:wScale(38.5)
     },
     font: {
         fontSize: wScale(16),

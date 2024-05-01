@@ -29,7 +29,7 @@ export default function Onboard_2() {
             <DateTimePicker style={styles.picker}value={date} mode={'time'} onChange={arrivalChange} is24Hour={true}/>
             <RegularText style={styles.script}>이동 출발시각 설정</RegularText>
             <DateTimePicker style={styles.picker}value={date} mode='time' onChange={departureChange}is24Hour={true}/>
-            <FullSizeButton onPress={() => navigation.navigate('Onboard_1')}children='다음'/>
+            <FullSizeButton onPress={() => navigation.navigate('set_ready_time')} style={styles.button} children='다음'/>
         </View>
     )
 }
@@ -47,5 +47,9 @@ const styles = StyleSheet.create({
     picker:{
         marginTop:hScale(40),
         
+    },
+    button:{
+        position:'absolute',
+        bottom:hScale(75)
     }
 })
