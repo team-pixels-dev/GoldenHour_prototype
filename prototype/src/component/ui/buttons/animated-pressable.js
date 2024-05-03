@@ -4,7 +4,7 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-na
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 /** 버튼의 애니매이션을 커스텀 해놓은 컴포넌트 */
-const CustomAnimatedPressable = ({ style, children, onPress }) => {
+const CustomAnimatedPressable = ({ style, children, onPress, disabled }) => {
   const opacity = useSharedValue(1);
   const pressed = useSharedValue(false);
 
@@ -31,6 +31,7 @@ const CustomAnimatedPressable = ({ style, children, onPress }) => {
       onPress={onPress}
       onPressOut={handlePressOut}
       style={[{ opacity }, style, uas]}
+      disabled = {disabled}
     >
       {children}
     </AnimatedPressable>

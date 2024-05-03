@@ -7,8 +7,10 @@ import { wScale } from '../../utils/scaling';
 /** 폰트 적용을 위해 커스텀한 Text 컴포넌트 */
 export default function Label({ children, style }) {
   const [fontsLoaded, fontError] = useFonts({
+    'Pretendard-Light': require('../../assets/fonts/Pretendard-Light.ttf'),
     'Pretendard-Regular': require('../../assets/fonts/Pretendard-Regular.ttf'),
     'Pretendard-Bold': require('../../assets/fonts/Pretendard-Bold.ttf'),
+    'Pretendard-SemiBold': require('../../assets/fonts/Pretendard-SemiBold.ttf'),
     'Pretendard-ExtraBold': require('../../assets/fonts/Pretendard-ExtraBold.ttf'),
   });
 

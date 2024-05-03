@@ -1,5 +1,5 @@
-import { Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import { Dimensions, Platform } from 'react-native';
+const { width, height } = Platform.OS === 'ios' ? Dimensions.get('window') : Dimensions.get('screen');
 
 // 기준 화면 사이즈 : moamoaTestDivce, 390x844 기준.
 const guidelineBaseWidth = 390;
