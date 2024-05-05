@@ -31,6 +31,8 @@ export default function Shower(){
             setTime((prevTime) => {
                 if(prevTime <= 1){
                     clearInterval(interval);
+                    setIsRunning(false);
+                    autoModalOpen();
                     return 0;
                 }
                 return prevTime -1;
@@ -45,18 +47,18 @@ export default function Shower(){
     const onPressModalOpen = () => {
         setModalOpen(true);
         setIsRunning(false);
-        Animated.timing(animatedValue).stop();
         setTimeLeft(time);
+        Animated.timing(animatedValue).stop();
     }
 
     const autoModalOpen = () => {
         setFailModalOpen(true);
-        setIsRunning(false);
     }
     
 
     const onPressModalClose = () => {
         setModalOpen(false);
+        setFailModalOpen(false);
     }
 
     const formattedTime = (time) => {
@@ -76,7 +78,7 @@ export default function Shower(){
                 <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
             </View>
             <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, height],outputRange: [0,height],})}]} />
-            {time <= 0 ? 
+    
             <Modal animationType='slide' visible = {modalOpen} transparent={true}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalBack}/>
@@ -87,7 +89,8 @@ export default function Shower(){
                 </View>
                 </View>
             </Modal>
-            : <Modal animationType='slide' visible = {failModalOpen} transparent={true}>
+            
+            <Modal animationType='slide' visible = {failModalOpen} transparent={true}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalBack}/>
                 <View style={styles.modal}>
@@ -98,7 +101,7 @@ export default function Shower(){
                 </View>
                 </View>
             </Modal>
-            }
+            
             
         </View>
     )
