@@ -11,7 +11,7 @@ export default function Onboard_1() {
         <View style={styles.continer}>
             <RegularText style={styles.script}>굿굿</RegularText>
             <RegularText style={styles.script2}>제 시간에 도착하셨네요 !</RegularText>
-            <FullSizeButton onPress={() => navigation.navigate('Disappoint')} children="완료"/>
+            <FullSizeButton onPress={() => navigation.navigate('Onboard_1')} children="완료"/>
         </View>
     )
 }

@@ -8,6 +8,8 @@ import Onboard_2 from "./src/screens/Onboard/onboard-2";
 import Praise from "./src/screens/Onboard/praise";
 import Disappoint from "./src/screens/Onboard/disappoint";
 import Shower from "./src/screens/Onboard/Shower";
+import Clothing from "./src/screens/Onboard/Clothing";
+import Moving from "./src/screens/Onboard/moving";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,8 @@ function Navigation(){
                 <Stack.Screen options={{ headerShown: false }} name="Praise" component={Praise}/>
                 <Stack.Screen options={{ headerShown: false }} name="Disappoint" component={Disappoint}/>
                 <Stack.Screen options={{ headerShown: false }} name="Shower" component={Shower}/>
+                <Stack.Screen options={{ headerShown: false }} name="Clothing" component={Clothing}/>
+                <Stack.Screen options={{ headerShown: false }} name="Moving" component={Moving}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
