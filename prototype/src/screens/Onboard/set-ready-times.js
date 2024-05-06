@@ -8,7 +8,6 @@ import * as Haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
 import { setTotalReadyCompletedTime, setWashingCompletedTime, setEtcCompletedTime} from '../../stores/ready-time-slice';
-import { current } from '@reduxjs/toolkit';
 
 export default function SetReadyTimes() {
 
@@ -68,9 +67,7 @@ export default function SetReadyTimes() {
         dispatch(setTotalReadyCompletedTime(currentTime + (totalReadyTime*1000*60)));
         dispatch(setWashingCompletedTime(currentTime + (washingTime*1000*60)));
         dispatch(setEtcCompletedTime(currentTime + ((washingTime + etcTime)*1000*60)));
-
-        console.log(totalReadyCompletedTime);
-        // navigation.navigate('');
+        navigation.navigate('Praise');
         hapticsFeedback();
     }
 
