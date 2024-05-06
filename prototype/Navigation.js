@@ -8,6 +8,7 @@ import Onboard_2 from "./src/screens/Onboard/onboard-2";
 import SetReadyTimes from "./src/screens/Onboard/set-ready-times";
 import Praise from "./src/screens/Onboard/praise";
 import Disappoint from "./src/screens/Onboard/disappoint";
+import Shower from "./src/screens/Onboard/Shower";
 import SliderScreen from "./src/component/features/slider/slider";
 
 const Stack = createStackNavigator();
@@ -22,6 +23,7 @@ function Navigation(){
                 <Stack.Screen options={{ headerShown: false }} name="Disappoint" component={Disappoint}/>
                 <Stack.Screen options={{ headerShown: false }} name="set_ready_time" component={SetReadyTimes}/>
                 <Stack.Screen options={{ headerShown: false }} name="range_slider" component={SliderScreen}/>
+                <Stack.Screen options={{ headerShown: false }} name="Shower" component={Shower}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
