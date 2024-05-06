@@ -67,7 +67,7 @@ export default function SetReadyTimes() {
         dispatch(setTotalReadyCompletedTime(currentTime + (totalReadyTime*1000*60)));
         dispatch(setWashingCompletedTime(currentTime + (washingTime*1000*60)));
         dispatch(setEtcCompletedTime(currentTime + ((washingTime + etcTime)*1000*60)));
-        navigation.navigate('Praise');
+        navigation.navigate('Shower');
         hapticsFeedback();
     }
 
