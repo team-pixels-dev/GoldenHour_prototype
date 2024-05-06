@@ -6,15 +6,13 @@ import CircleButton from '../../component/ui/buttons/circle-button';
 import Success from '../../../src/assets/success.png';
 import Fail from '../../../src/assets/fail.png';
 import ModalBtn from '../../component/ui/buttons/modal-button';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+
 const {height} = Dimensions.get('window');
 
-export default function Shower(){
-    const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
-
+export default function Clothing(){
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(parseInt((washingCompletedTime - new Date().getTime())/(1000)));
+    const [time, setTime] = useState(60);
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
@@ -73,19 +71,13 @@ export default function Shower(){
         return `${hour.toString().padStart(2, '0')} : ${minute.toString().padStart(2, '0')} : ${second.toString().padStart(2, '0')}`;
     }
 
-    const formattedTime2 = (time) => {
-        const minute = Math.floor(time / 60);
-        const second = time % 60
-        
-        return `${minute.toString().padStart(2, '0')} 분 ${second.toString().padStart(2, '0')} 초`;
-    }
-
     return(
         <View style={styles.background}>
             <View style={styles.component}>
-                <RegularText style={styles.text}>지금은 씻는 시간 !</RegularText>
+                <RegularText style={styles.text}>지금은 옷입고</RegularText>
+                <RegularText style={styles.text}>준비하는 시간 !</RegularText>
                 <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
-                <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
+                <CircleButton children='완료' color="#7AFFB7" onPress={() => onPressModalOpen()}/>
             </View>
             <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, height],outputRange: [0,height],})}]} />
     
@@ -94,8 +86,8 @@ export default function Shower(){
                 <View style={styles.modalBack}/>
                 <View style={styles.modal}>
                     <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={() => {onPressModalClose(); navigation.navigate('Clothing');}}/>
+                    <RegularText style={styles.modalText}>{time}초 아끼셨네요</RegularText>
+                    <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose(); navigation.navigate('Moving');}}/>
                 </View>
                 </View>
             </Modal>
@@ -107,7 +99,7 @@ export default function Shower(){
                     <Image source={Success} style={styles.img}></Image>
                     <RegularText style={styles.modalText}>지각 예정이에요..!</RegularText>
                     <RegularText style={styles.modalText}>서둘러 주세요.</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose()}}/>
+                    <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose(); navigation.navigate('Moving');}}/>
                 </View>
                 </View>
             </Modal>
@@ -127,7 +119,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column-reverse',
     },
     colorback: {
-        backgroundColor: "#7AF7FF",
+        backgroundColor: "#7AFFB7",
         width:'100%',
         zIndex: 1
     },
