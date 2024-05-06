@@ -6,13 +6,16 @@ import CircleButton from '../../component/ui/buttons/circle-button';
 import Success from '../../../src/assets/success.png';
 import Fail from '../../../src/assets/fail.png';
 import ModalBtn from '../../component/ui/buttons/modal-button';
+import { useSelector } from 'react-redux';
 
 const {height} = Dimensions.get('window');
 
 
 export default function Shower(){
+    const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
+
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(5);
+    const [time, setTime] = useState(parseInt((washingCompletedTime - new Date().getTime())/(1000)));
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
@@ -70,6 +73,13 @@ export default function Shower(){
         return `${hour.toString().padStart(2, '0')} : ${minute.toString().padStart(2, '0')} : ${second.toString().padStart(2, '0')}`;
     }
 
+    const formattedTime2 = (time) => {
+        const minute = Math.floor(time / 60);
+        const second = time % 60
+        
+        return `${minute.toString().padStart(2, '0')} 분 ${second.toString().padStart(2, '0')} 초`;
+    }
+
     return(
         <View style={styles.background}>
             <View style={styles.component}>
@@ -84,7 +94,7 @@ export default function Shower(){
                 <View style={styles.modalBack}/>
                 <View style={styles.modal}>
                     <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>{time}초 아끼셨네요</RegularText>
+                    <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
                     <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose()}}/>
                 </View>
                 </View>
