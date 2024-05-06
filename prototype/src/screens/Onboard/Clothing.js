@@ -7,12 +7,15 @@ import Success from '../../../src/assets/success.png';
 import Fail from '../../../src/assets/fail.png';
 import ModalBtn from '../../component/ui/buttons/modal-button';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const {height} = Dimensions.get('window');
 
 export default function Clothing(){
+    const etcCompletedTime = useSelector((state) => state.readyTime.etcCompletedTime);
+
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(60);
+    const [time, setTime] = useState(Math.floor((etcCompletedTime - new Date().getTime())/(1000)));
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);

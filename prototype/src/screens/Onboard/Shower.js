@@ -14,7 +14,7 @@ export default function Shower(){
     const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
 
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(parseInt((washingCompletedTime - new Date().getTime())/(1000)));
+    const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
