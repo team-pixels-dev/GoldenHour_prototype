@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    arrival:'',
-    departure: '',
+    arrival:0,
+    departure:0,
 };
 
 const timeSlice = createSlice({

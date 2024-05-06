@@ -11,7 +11,7 @@ export default function Onboard_1() {
     return(
         <View style={styles.continer}>
             <RegularText style={styles.script}>늦지 않게 해드릴게요!</RegularText>
-            <FullSizeButton onPress={() => navigation.navigate('Onboard_2')} children="시작하기"/>
+            <FullSizeButton onPress={() => navigation.navigate('Onboard_2')} style={styles.button} children="시작하기"/>
         </View>
     )
 }
@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
 
     script:{
         fontFamily:'Pretendard-Bold',
-        marginTop:hScale(300)
+    },
+    
+    button:{
+        position:'absolute',
+        bottom:hScale(75)
     }
 });
