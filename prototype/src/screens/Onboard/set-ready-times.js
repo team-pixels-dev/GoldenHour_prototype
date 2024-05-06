@@ -8,14 +8,18 @@ import * as Haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
 import { setTotalReadyCompletedTime, setWashingCompletedTime, setEtcCompletedTime} from '../../stores/ready-time-slice';
+import { current } from '@reduxjs/toolkit';
 
 export default function SetReadyTimes() {
 
-    // 현재시간
-    const currentTime = new Date()
-    // 출발시간
+    // 현재시간 ms
+    let currentTime = new Date().getTime();
+    // 출발시간 ms
     const departure = useSelector((state) => state.time.departure);
-    const readyStartTime = new Date(departure);
+    // const totalReadyCompletedTime = useSelector((state) => state.readyTime.totalReadyCompletedTime);
+    // const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
+    // const etcCompletedTime = useSelector((state) => state.readyTime.etcCompletedTime);
+    // const spareTime_ = useSelector((state) => state.readyTime.spareTime);
     const dispatch = useDispatch();
 
     function getTimeString(dateObj){
@@ -26,12 +30,11 @@ export default function SetReadyTimes() {
         dateObj.getMinutes() + ":" + 
         dateObj.getSeconds();
     }
-    console.log(getTimeString(readyStartTime));
 
     // 총 준비시간의 최대값 : 출발시간 - 현재시간
-    const [maximumReadyTime, setMaximumReadyTime] = useState(parseInt((readyStartTime-currentTime)/(1000*60)));
+    const [maximumReadyTime, setMaximumReadyTime] = useState(parseInt((departure-currentTime)/(1000*60)));
     const [totalReadyTime, setTotalReadyTime] = useState(parseInt(maximumReadyTime/2)); // 총 준비 시간
-    const [maxWashingTime, setMaxWashingTime] = useState(totalReadyTime);
+    const [maxWashingTime, setMaxWashingTime] = useState(maximumReadyTime);
     const [washingTime, setWashingTime] = useState(0); // 씻는 시간
     const [etcTime, setEtcTime] = useState(0);
     const [spareTime, setSpareTime] = useState(totalReadyTime - washingTime - etcTime); // 여유시간
@@ -46,7 +49,7 @@ export default function SetReadyTimes() {
         hapticsFeedback();
     }
     function onCompleteTotalReadyTime(val){
-        setMaxWashingTime(val);
+        // setMaxWashingTime(val);
         setSpareTime(val - washingTime - etcTime);
         hapticsFeedback();
     }
@@ -61,13 +64,20 @@ export default function SetReadyTimes() {
         hapticsFeedback();
     }
     function start(){
-        dispatch(setTotalReadyCompletedTime(totalReadyTime));
-        dispatch(setWashingCompletedTime(washingTime));
-        dispatch(setEtcCompletedTime(etcTime));
+        currentTime = new Date().getTime()
+        dispatch(setTotalReadyCompletedTime(currentTime + (totalReadyTime*1000*60)));
+        dispatch(setWashingCompletedTime(currentTime + (washingTime*1000*60)));
+        dispatch(setEtcCompletedTime(currentTime + ((washingTime + etcTime)*1000*60)));
 
+        console.log(totalReadyCompletedTime);
         // navigation.navigate('');
         hapticsFeedback();
     }
+
+    const RemainTime = spareTime >= 0 ?
+    <RegularText style={styles.timeMarker_child_2}>여유시간:{spareTime}분</RegularText> :
+    <RegularText style={[{color:'red'},styles.timeMarker_child_2]}>초과시간:{spareTime*-1}분</RegularText>
+
     const timeMarker = (value, max) => {
         return (
             <View style={[{marginLeft:value * 230/(max+1)}, styles.timeMarker]}>
@@ -79,9 +89,33 @@ export default function SetReadyTimes() {
         );
     }
 
-    const RemainTime = spareTime >= 0 ?
-    <RegularText style={styles.timeMarker_child_2}>여유시간:{spareTime}분</RegularText> :
-    <RegularText style={[{color:'red'},styles.timeMarker_child_2]}>초과시간:{spareTime*-1}분</RegularText>
+    const slider = (boldText, smallText, maximumValue, lowerLimit, upperLimit, value, onValueChang, onSlidingComplete = 0) => {
+        return(
+            <View style={styles.sliderArea}>
+                    <View style={styles.scriptArea}>
+                        <RegularText style={styles.boldText}>{boldText}</RegularText>
+                        <RegularText style={styles.lightText}>{smallText}</RegularText>
+                    </View>
+                    <Slider
+                        style={styles.slider}
+                        minimumValue={0}
+                        maximumValue={maximumValue}
+                        lowerLimit={lowerLimit}
+                        upperLimit={upperLimit}
+                        value={value}
+                        onValueChange={onValueChang}
+                        onSlidingComplete={onSlidingComplete}
+                        step={1}
+                        minimumTrackTintColor="#FFF500"
+                        maximumTrackTintColor="#B4B4B4"
+                        thumbTintColor="#FFF500"
+                    />
+                    {timeMarker(value, maximumValue)}
+                </View>
+        );
+    }
+
+    
 
     // useEffect(()=>{
     //     setInterval(()=>{
@@ -92,64 +126,34 @@ export default function SetReadyTimes() {
     return(
         <View style={styles.container}>
             <View style={styles.content}>
-                <View name='total_ready_time' style={styles.sliderArea}>
-                    <View style={styles.scriptArea}>
-                        <RegularText style={styles.boldText}>전체 준비 시간</RegularText>
-                        <RegularText style={styles.lightText}>10분 정도의 여유시간을 주는게 좋아요</RegularText>
-                    </View>
-                    <Slider
-                        style={styles.slider}
-                        minimumValue={0}
-                        maximumValue={maximumReadyTime}
-                        lowerLimit={washingTime + etcTime <= 1 ? 1 : washingTime + etcTime}
-                        value={totalReadyTime}
-                        onValueChange={(val) => onChangeTotalReadyTime(val)}
-                        onSlidingComplete={(val) => onCompleteTotalReadyTime(val)}
-                        step={1}
-                        minimumTrackTintColor="#FFF500"
-                        maximumTrackTintColor="#B4B4B4"
-                        thumbTintColor="#FFF500"
-                    />
-                    {timeMarker(totalReadyTime, maximumReadyTime)}
-                </View>
-                <View name='washing_time' style={styles.sliderArea}>
-                    <View style={styles.scriptArea}>
-                        <RegularText style={styles.boldText}>씻는 시간</RegularText>
-                        <RegularText style={styles.lightText}>챙겨야 할 준비물은 다 생각하셨나요?</RegularText>
-                    </View>
-                    <Slider
-                        style={styles.slider}
-                        minimumValue={0}    
-                        maximumValue={maxWashingTime}
-                        upperLimit={maximumReadyTime - etcTime}
-                        value={washingTime}
-                        onValueChange={(val) => onChangeWashingTime(val)}
-                        step={1}
-                        minimumTrackTintColor="#FFF500"
-                        maximumTrackTintColor="#B4B4B4"
-                        thumbTintColor="#FFF500"
-                    />
-                    {timeMarker(washingTime, maxWashingTime)}
-                </View>
-                <View name='ready_time' style={styles.sliderArea}>
-                    <View style={styles.scriptArea}>
-                        <RegularText style={styles.boldText}>옷입고 준비하는 시간</RegularText>
-                        <RegularText style={styles.lightText}>챙겨야 할 준비물은 다 생각하셨나요?</RegularText>
-                    </View>
-                    <Slider
-                        style={styles.slider}
-                        minimumValue={0}
-                        maximumValue={maxWashingTime}
-                        upperLimit={maximumReadyTime - washingTime}
-                        value={etcTime}
-                        onValueChange={(val)=>onChangeEtcTime(val)}
-                        step={1}
-                        minimumTrackTintColor="#FFF500"
-                        maximumTrackTintColor="#B4B4B4"
-                        thumbTintColor="#FFF500"
-                    />
-                    {timeMarker(etcTime, maxWashingTime)}
-                </View>
+                {slider(
+                    boldText = "전체 준비 시간",
+                    smallText = "10분 정도의 여유시간을 주는게 좋아요", 
+                    maximumValue = maximumReadyTime, 
+                    lowerLimit = 1,
+                    upperLimit = maximumReadyTime,
+                    value = totalReadyTime, 
+                    onValueChang = (val) => onChangeTotalReadyTime(val), 
+                    onSlidingComplete = (val) => onCompleteTotalReadyTime(val)
+                )}
+                {slider(
+                    boldText = "씻는 시간",
+                    smallText = "챙겨야 할 준비물은 다 생각하셨나요?",
+                    maximumValue = maxWashingTime, 
+                    lowerLimit = 0,
+                    upperLimit = maximumReadyTime - etcTime,
+                    value = washingTime, 
+                    onValueChang = (val) => onChangeWashingTime(val), 
+                )}
+                {slider(
+                    boldText = "옷입고 준비하는 시간",
+                    smallText = "챙겨야 할 준비물은 다 생각하셨나요?", 
+                    maximumValue = maxWashingTime, 
+                    lowerLimit = 0,
+                    upperLimit = maximumReadyTime - washingTime,
+                    value = etcTime, 
+                    onValueChang = (val) => onChangeEtcTime(val), 
+                )}
             </View>
             <FullSizeButton style={styles.button} onPress={start}>준비시작!</FullSizeButton>
         </View>

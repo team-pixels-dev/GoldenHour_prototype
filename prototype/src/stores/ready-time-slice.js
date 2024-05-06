@@ -12,7 +12,8 @@ export const readyTimeSlice = createSlice({
   initialState,
   reducers: {
     setTotalReadyCompletedTime : (state, action) => {
-        state.totalReadyCompletedTime = action.payload; 
+        state.totalReadyCompletedTime = action.payload;
+        console.log(action.payload);
     },
     setWashingCompletedTime : (state, action) => {
       state.washingCompletedTime = action.payload; 
