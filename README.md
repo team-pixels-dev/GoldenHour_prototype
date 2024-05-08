@@ -1,47 +1,68 @@
-golden hour 모바일앱
+# Golden Hour Prototype ⏰
 
-npm 모듈 리스트
+## Team
 
-@babel/core@7.24.3
+<table align="center" style="width:100%;">
+  <tr align="center">
+    <td style="width: 50%;">
+        <b>문소영</b>
+        <br/>
+        <b>Front-End</b>
+        <br/>
+        <img src='./prototype/src/assets/github_sy.png' width="40%">
+        <br/>
+        <a href="https://github.com/msy8709">https://github.com/msy8709</a>
+    </td>
+    <td style="width: 50%;">
+        <b>구자유</b>
+        <br/>
+        <b>Front-End</b>
+        <br/>
+        <img src='./prototype/src/assets/github_jy.png' width="40%">
+        <br/>
+        <a href="https://github.com/jayou2323">https://github.com/jayou2323</a>
+    </td>
+  </tr>
+<table>
 
-@expo/metro-runtime@3.1.3
+## Front-End 기술 스택
 
-@reduxjs/toolkit@2.2.3
+<table>
+<tr>
+ <td align="center">언어</td>
+ <td>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white"/>
+ </td>
+</tr>
+<tr>
+ <td align="center">프레임워크</td>
+ <td>
+ <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>&nbsp
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
 
-expo-font@11.10.3
+ </td>
+</tr>
+<tr>
+ <td align="center">CSS 프레임워크</td>
+ <td>
+  <img src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white"/>
+ </td>
+</tr>
+<tr>
+ <td align="center">라이브러리</td>
+ <td>
+  <img src="https://img.shields.io/badge/Axios-6028e0?style=for-the-badge&logo=Axios&logoColor=ffffff"/>&nbsp
+  <img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white"/>&nbsp
+ </td>
+</tr>
+<tr>
+ <td align="center">패키지</td>
+ <td>
+    <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=NPM&logoColor=ffffff"/>
+  </td>
+</tr>
+</table>
 
-expo-splash-screen@0.26.4
 
-expo-status-bar@1.11.1
-
-expo@50.0.14
-
-react-dom@18.2.0
-
-react-native-web@0.19.10
-
-react-native@0.73.6
-
-react-redux@9.1.0
-
-react@18.2.0
-
-@react-navigation/native
-
-redux@5.0.1
-
-@react-navigation/bottom-tabs
-
-@react-navigation/stack
-
-@react-navigation/material-top-tabs react-native-tab-view
-
-npx 모듈 리스트
-
-react-native-screens react-native-safe-area-context
-
-react-native-reanimated
-
-react-native-pager-view
-
-react-native-gesture-handler
+## 프로젝트 주요 기능
