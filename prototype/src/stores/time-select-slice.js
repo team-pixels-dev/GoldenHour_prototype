@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    arrival:0,
-    departure:0,
+    arrival:0, // 도착 시점 (ms)
+    departure:0, // 출발 시점 (ms)
 };
 
 const timeSlice = createSlice({

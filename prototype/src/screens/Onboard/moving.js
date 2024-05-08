@@ -1,28 +1,28 @@
-import { Modal, Animated, StyleSheet, Text, View, Image, Button, Dimensions } from 'react-native';
-import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
+import { Animated, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {wScale, hScale} from '../../utils/scaling';
 import RegularText from '../../component/ui/regular-text'
-import react, {useEffect,useRef, useState} from 'react';
+import {useEffect,useRef, useState} from 'react';
 import CircleButton from '../../component/ui/buttons/circle-button';
-import Success from '../../../src/assets/success.png';
-import Fail from '../../../src/assets/fail.png';
-import ModalBtn from '../../component/ui/buttons/modal-button';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const {height} = Dimensions.get('window');
 export default function Moving(){
-    const [timeLeft, setTimeLeft] = useState();
+    const arrival = useSelector((state) => state.time.arrival)
+
+    const [remainTime, setRemainTime] = useState(arrival - new Date().getTime());
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
-    const [arrival, setArrival] = useState(true);
+    const [isArrival, setIsArrival] = useState(true);
 
     useEffect(() => {
         let interval;
         if (isRunning){
             Animated.timing(animatedValue, {
             toValue: height,
-            duration: 28 * 1000 , // 남은 시간 넣어야함. 
+            duration: remainTime + (59 * 1000), // 남은 시간 넣어야함. 
             useNativeDriver: false,
         
         }).start();
@@ -37,10 +37,17 @@ export default function Moving(){
     }, [isRunning]);
 
     const pressDepart = () => {
-        setArrival(false);
+        setIsArrival(false);
+        setRemainTime(arrival - new Date().getTime());
         setIsRunning(true);
-        setTimeLeft(time);
         Animated.timing(animatedValue).stop();
+    }
+    
+    const pressArrival = () => {
+        if((arrival - new Date().getTime()) >= 0)
+            navigation.navigate('Praise');
+        else
+            navigation.navigate('Disappoint');
     }
 
     const formattedTime = (time) => {
@@ -56,7 +63,7 @@ export default function Moving(){
             <View style={styles.BtnView}>
                 <Text style={styles.BtnText1}>도착 버튼을</Text>
                 <Text style={styles.BtnText2}>눌러주세요</Text>
-                <CircleButton children='도착' color="#EDEDED" onPress={() => navigation.navigate('Praise')}/>
+                <CircleButton children='도착' color="#EDEDED" onPress={pressArrival}/>
             </View>
         )
     }
@@ -66,7 +73,7 @@ export default function Moving(){
             <View style={styles.component}>
                 <RegularText style={styles.text}>집에서 도착지로 ~~</RegularText>
                 <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
-                {arrival ? <CircleButton children='출발' color="#FFFA7A" onPress={() => pressDepart()}/> : depart()}
+                {isArrival ? <CircleButton children='출발' color="#FFFA7A" onPress={() => pressDepart()}/> : depart()}
             </View>
             <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, height],outputRange: [0,height],})}]} />    
         </View>

@@ -34,8 +34,8 @@ export default function SetReadyTimes() {
     const [maximumReadyTime, setMaximumReadyTime] = useState(parseInt((departure-currentTime)/(1000*60)));
     const [totalReadyTime, setTotalReadyTime] = useState(parseInt(maximumReadyTime/2)); // 총 준비 시간
     const [maxWashingTime, setMaxWashingTime] = useState(maximumReadyTime);
-    const [washingTime, setWashingTime] = useState(0); // 씻는 시간
-    const [etcTime, setEtcTime] = useState(0);
+    const [washingTime, setWashingTime] = useState(1); // 씻는 시간
+    const [etcTime, setEtcTime] = useState(1);
     const [spareTime, setSpareTime] = useState(totalReadyTime - washingTime - etcTime); // 여유시간
 
     const navigation = useNavigation();
@@ -45,13 +45,14 @@ export default function SetReadyTimes() {
     }
     function onChangeTotalReadyTime(val){
         setTotalReadyTime(val);
-        hapticsFeedback();
-    }
-    function onCompleteTotalReadyTime(val){
-        // setMaxWashingTime(val);
         setSpareTime(val - washingTime - etcTime);
         hapticsFeedback();
     }
+    // function onCompleteTotalReadyTime(val){
+    //     // setMaxWashingTime(val);
+    //     setSpareTime(val - washingTime - etcTime);
+    //     hapticsFeedback();
+    // }
     function onChangeWashingTime(val){
         setWashingTime(val);
         setSpareTime(totalReadyTime - val - etcTime);
@@ -131,13 +132,13 @@ export default function SetReadyTimes() {
                     upperLimit = maximumReadyTime,
                     value = totalReadyTime, 
                     onValueChang = (val) => onChangeTotalReadyTime(val), 
-                    onSlidingComplete = (val) => onCompleteTotalReadyTime(val)
+                    // onSlidingComplete = (val) => onCompleteTotalReadyTime(val)
                 )}
                 {slider(
                     boldText = "씻는 시간",
                     smallText = "챙겨야 할 준비물은 다 생각하셨나요?",
                     maximumValue = maxWashingTime, 
-                    lowerLimit = 0,
+                    lowerLimit = 1,
                     upperLimit = maximumReadyTime - etcTime,
                     value = washingTime, 
                     onValueChang = (val) => onChangeWashingTime(val), 
@@ -146,7 +147,7 @@ export default function SetReadyTimes() {
                     boldText = "옷입고 준비하는 시간",
                     smallText = "챙겨야 할 준비물은 다 생각하셨나요?", 
                     maximumValue = maxWashingTime, 
-                    lowerLimit = 0,
+                    lowerLimit = 1,
                     upperLimit = maximumReadyTime - washingTime,
                     value = etcTime, 
                     onValueChang = (val) => onChangeEtcTime(val), 
