@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
         borderRadius: wScale(50),
         backgroundColor: '#FFFFFF',
         borderWidth: wScale(1),
-        borderStyle: 'double'
     },
     circle2: {
         width: wScale(70),
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
         borderRadius: wScale(50),
         backgroundColor: '#FFFFFF',
         borderWidth: wScale(1),
-        borderStyle: 'double'
     },
     font: {
         fontFamily:'Pretendard-Bold',
