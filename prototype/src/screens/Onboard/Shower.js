@@ -6,17 +6,23 @@ import CircleButton from '../../component/ui/buttons/circle-button';
 import Success from '../../../src/assets/success.png';
 import Fail from '../../../src/assets/fail.png';
 import ModalBtn from '../../component/ui/buttons/modal-button';
+import { useSelector, useDispatch } from 'react-redux';
+import {setSavedWashingTime} from '../../stores/ready-time-slice'
 import { useNavigation } from '@react-navigation/native';
 const {height} = Dimensions.get('window');
 
 export default function Shower(){
+    const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
+
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(60);
+    const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let interval;
@@ -70,6 +76,21 @@ export default function Shower(){
         return `${hour.toString().padStart(2, '0')} : ${minute.toString().padStart(2, '0')} : ${second.toString().padStart(2, '0')}`;
     }
 
+    const formattedTime2 = (time) => {
+        const minute = Math.floor(time / 60);
+        const second = time % 60
+        
+        return `${minute.toString().padStart(1, '0')} 분 ${second.toString().padStart(1, '0')} 초`;
+    }
+
+    const onModalNext = () => {
+        if(time > 0){
+            dispatch(setSavedWashingTime(time));
+        }
+        onPressModalClose();
+        navigation.navigate('Clothing');
+    }
+
     return(
         <View style={styles.background}>
             <View style={styles.component}>
@@ -84,8 +105,8 @@ export default function Shower(){
                 <View style={styles.modalBack}/>
                 <View style={styles.modal}>
                     <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>{time}초 아끼셨네요</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={() => {onPressModalClose(); navigation.navigate('Clothing');}}/>
+                    <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
+                    <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
                 </View>
                 </View>
             </Modal>
@@ -97,7 +118,7 @@ export default function Shower(){
                     <Image source={Success} style={styles.img}></Image>
                     <RegularText style={styles.modalText}>지각 예정이에요..!</RegularText>
                     <RegularText style={styles.modalText}>서둘러 주세요.</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose()}}/>
+                    <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
                 </View>
                 </View>
             </Modal>

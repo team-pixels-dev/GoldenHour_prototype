@@ -1,23 +1,29 @@
 import { Modal, Animated, StyleSheet, Text, View, Image, Button, Dimensions } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
-import RegularText from '../../component/ui/regular-text'
+import RegularText from '../../component/ui/regular-text';
 import react, {useEffect,useRef, useState} from 'react';
 import CircleButton from '../../component/ui/buttons/circle-button';
 import Success from '../../../src/assets/success.png';
 import Fail from '../../../src/assets/fail.png';
 import ModalBtn from '../../component/ui/buttons/modal-button';
 import { useNavigation } from '@react-navigation/native';
+import { setSavedEtcTime } from '../../stores/ready-time-slice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const {height} = Dimensions.get('window');
 
 export default function Clothing(){
-    const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(60);
+    const savedWasingTime = useSelector((state) => state.readyTime.savedWasingTime);
+    const etcCompletedTime = useSelector((state) => state.readyTime.etcCompletedTime);
+
+    const [time, setTime] = useState(Math.floor((etcCompletedTime - new Date().getTime())/(1000) - savedWasingTime));
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let interval;
@@ -48,7 +54,6 @@ export default function Clothing(){
     const onPressModalOpen = () => {
         setModalOpen(true);
         setIsRunning(false);
-        setTimeLeft(time);
         Animated.timing(animatedValue).stop();
     }
 
@@ -71,6 +76,13 @@ export default function Clothing(){
         return `${hour.toString().padStart(2, '0')} : ${minute.toString().padStart(2, '0')} : ${second.toString().padStart(2, '0')}`;
     }
 
+    const formattedTime2 = (time) => {
+        const minute = Math.floor(time / 60);
+        const second = time % 60
+        
+        return `${minute.toString().padStart(1, '0')} 분 ${second.toString().padStart(1, '0')} 초`;
+    }
+
     return(
         <View style={styles.background}>
             <View style={styles.component}>
@@ -86,7 +98,7 @@ export default function Clothing(){
                 <View style={styles.modalBack}/>
                 <View style={styles.modal}>
                     <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>{time}초 아끼셨네요</RegularText>
+                    <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
                     <ModalBtn style={styles.btn}children='다음' onPress={()=>{onPressModalClose(); navigation.navigate('Moving');}}/>
                 </View>
                 </View>
