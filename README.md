@@ -52,7 +52,6 @@
 <tr>
  <td align="center">라이브러리</td>
  <td>
-  <img src="https://img.shields.io/badge/Axios-6028e0?style=for-the-badge&logo=Axios&logoColor=ffffff"/>&nbsp
   <img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white"/>&nbsp
  </td>
 </tr>
