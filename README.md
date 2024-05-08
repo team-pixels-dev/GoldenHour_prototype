@@ -9,7 +9,7 @@
         <br/>
         <b>Front-End</b>
         <br/>
-        <img src='./prototype/src/assets/github_sy.png' width="40%">
+        <img src='./prototype/src/assets/github_sy.jpg' width="40%">
         <br/>
         <a href="https://github.com/msy8709">https://github.com/msy8709</a>
     </td>
@@ -18,7 +18,7 @@
         <br/>
         <b>Front-End</b>
         <br/>
-        <img src='./prototype/src/assets/github_jy.png' width="40%">
+        <img src='./prototype/src/assets/github_jy.jpg' width="40%">
         <br/>
         <a href="https://github.com/jayou2323">https://github.com/jayou2323</a>
     </td>
