@@ -1,4 +1,5 @@
-import { Platform, Modal, Animated, StyleSheet, View, Image, Dimensions, SafeAreaView } from 'react-native';
+import { AppState, Platform, Modal, Animated, StyleSheet,
+     View, Image, Dimensions, SafeAreaView } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
 import RegularText from '../../component/ui/regular-text'
 import react, {useEffect,useRef, useState} from 'react';
@@ -11,14 +12,17 @@ import {setSavedWashingTime} from '../../stores/ready-time-slice'
 import { useNavigation } from '@react-navigation/native';
 
 export default function Shower(){
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current); 
+
     // 씻기를 완료한 시점(ms)
     const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
     // 씻기를 위해 할당된 시간(초)
     const washingTime = useSelector((state) => state.readyTime.washingTime) * 60;
     // 화면이 로드된 시점에서 씻기를 완료하기까지 남은 시간(초)
-    const currentRemainTime = Math.floor((washingCompletedTime - new Date().getTime())/(1000));
+    const [currentRemainTime, setCurrentRemainTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
     // 전체 씻기 시간에서 소비한 시간의 비율
-    const washingTimePersent = 1 - (currentRemainTime/washingTime);
+    const [washingTimePersent, setWashingTimePersent] = useState(1 - (currentRemainTime/washingTime));
 
     const [timeLeft, setTimeLeft] = useState();
     // const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
@@ -26,20 +30,48 @@ export default function Shower(){
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
-    const animatedValue = useRef(new Animated.Value(SCREEN_HEIGHT * washingTimePersent)).current;
+    const [animatedValue, setAnimatedValue] = useState(new Animated.Value(SCREEN_HEIGHT * washingTimePersent));
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+          if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            console.log('App has come to the foreground!');
+            // 앱의 상태가 변경될 시점 기준으로 씻기를 완료하기까지 남은 시간(sec)
+            const remain = Math.floor((washingCompletedTime - new Date().getTime())/(1000));
+            setCurrentRemainTime(remain);
+            const persent = 1 - (remain/washingTime);
+            setWashingTimePersent(persent);
+            const animeatedValue_ = new Animated.Value(SCREEN_HEIGHT * persent);
+            setAnimatedValue(new Animated.Value(SCREEN_HEIGHT * persent));
+            // console.log('남은 시간 : '+ remain);
+          }
+    
+          appState.current = nextAppState;
+          setAppStateVisible(appState.current);
+          console.log('AppState', appState.current);
+        });
+    
+        return () => {
+          subscription.remove();
+        };
+      }, []);
+
+    
+    useEffect(() => {
         let interval;
+        let interval2;
         if (isRunning){
-            Animated.timing(animatedValue, {
-            toValue: SCREEN_HEIGHT,
-            duration: time * 1000 ,
-            useNativeDriver: false,
-        
-        }).start();
+            // Animated.timing(animatedValue, {
+            // toValue: SCREEN_HEIGHT,
+            // duration: time * 1000 ,
+            // useNativeDriver: false,
+        // }).start();
         interval = setInterval(() => {
             setTime((prevTime) => {
                 if(prevTime <= 1){
@@ -51,7 +83,16 @@ export default function Shower(){
                 return prevTime -1;
             })
         }, 1000);
-        return () => clearInterval(interval);
+        // interval2 = setInterval(() => {
+        //     const remain = (washingCompletedTime - new Date().getTime())/(1000);
+        //     setCurrentRemainTime(remain);
+        //     const persent = 1 - (remain/washingTime);
+        //     setWashingTimePersent(persent);
+        // }, 10);
+        return () => {
+            // clearInterval(interval);
+            // clearInterval(interval2);
+        }
         
     }
     }, [isRunning]);
@@ -105,8 +146,8 @@ export default function Shower(){
                     <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
                     <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
                 </View>
-                <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} />
-        
+                {/* <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} /> */}
+                <View style={[styles.colorback, {height:SCREEN_HEIGHT * washingTimePersent}]} /> 
                 <Modal animationType='slide' visible = {modalOpen} transparent={true}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalBack}/>
@@ -149,6 +190,7 @@ const styles = StyleSheet.create({
         // flex: 1,
         // width:hScale(SCREEN_HEIGHT),
         width: '100%',
+        transition: '1s',
         zIndex: 1
     },
     text: {
