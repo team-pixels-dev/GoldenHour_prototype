@@ -70,7 +70,7 @@ export default function Onboard_2() {
 
     const getTimeFormat = (date) => {
         let timeString = date.getHours().toString().padStart(2, '0') 
-        + ':' + date.getMinutes().toString().padStart(2, '0') + ' ';
+        + ':' + date.getMinutes().toString().padStart(2, '0')  + ' ';
         if (date.getHours() >= 12)
             timeString += 'PM'
         else
@@ -81,7 +81,7 @@ export default function Onboard_2() {
     const timePicker = (value, onChange, element = '') => {
         if(Platform.OS === 'ios')
             return(
-                <DateTimePicker style={styles.picker} value={value} mode='time' display='compact' onChange={onChange} is24Hour={true}/>
+                <DateTimePicker style={styles.picker} value={value} mode='time' display='compact' onChange={onChange} is24Hour={true} view={<View><RegularText>hello</RegularText></View>}/>
             )
         else
             return(
@@ -109,15 +109,17 @@ const styles = StyleSheet.create({
     },
     script1:{
         fontFamily:'Pretendard-Bold',
-        fontSize:hScale(25)
+        fontSize:hScale(30),
+        marginTop:hScale(-45)
     },
     script2:{
-        marginTop:hScale(75),
+        marginTop:hScale(120),
         fontFamily:'Pretendard-Bold',
-        fontSize:hScale(25)
+        fontSize:hScale(30)
     },
     picker:{
-        marginTop:hScale(40),
+        marginTop:hScale(75),
+        fontSize:wScale(28),
         ...Platform.select({
             android: {
                 width:wScale(150),
@@ -125,6 +127,9 @@ const styles = StyleSheet.create({
                 borderRadius:8,
                 justifyContent:'center',
                 alignItems:'center'
+            },
+            ios: {
+                transform: [{ scale: 1.2, }]
             }
         })
         
