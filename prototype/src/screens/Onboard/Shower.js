@@ -64,7 +64,7 @@ export default function Shower(){
 
     
     useEffect(() => {
-        let interval;
+        // let interval;
         let interval2;
         if (isRunning){
             // Animated.timing(animatedValue, {
@@ -72,23 +72,32 @@ export default function Shower(){
             // duration: time * 1000 ,
             // useNativeDriver: false,
         // }).start();
-        interval = setInterval(() => {
+        // interval = setInterval(() => {
+        //     setTime((prevTime) => {
+        //         if(prevTime <= 1){
+        //             clearInterval(interval);
+        //             setIsRunning(false);
+        //             autoModalOpen();
+        //             return 0;
+        //         }
+        //         return prevTime -1;
+        //     })
+        // }, 1000);
+        interval2 = setInterval(() => {
+            const remain = (washingCompletedTime - new Date().getTime())/(1000);
+            setCurrentRemainTime(remain);
+            const persent = 1 - (remain/washingTime);
+            setWashingTimePersent(persent);
             setTime((prevTime) => {
                 if(prevTime <= 1){
-                    clearInterval(interval);
+                    clearInterval(interval2);
                     setIsRunning(false);
                     autoModalOpen();
                     return 0;
                 }
-                return prevTime -1;
+                return Math.floor((washingCompletedTime - new Date().getTime())/(1000));
             })
-        }, 1000);
-        // interval2 = setInterval(() => {
-        //     const remain = (washingCompletedTime - new Date().getTime())/(1000);
-        //     setCurrentRemainTime(remain);
-        //     const persent = 1 - (remain/washingTime);
-        //     setWashingTimePersent(persent);
-        // }, 10);
+        }, 10);
         return () => {
             // clearInterval(interval);
             // clearInterval(interval2);

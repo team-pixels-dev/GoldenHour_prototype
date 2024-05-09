@@ -10,25 +10,26 @@ const {height} = Dimensions.get('window');
 export default function Moving(){
     const arrival = useSelector((state) => state.time.arrival)
 
-    const [remainTime, setRemainTime] = useState(arrival - new Date().getTime());
+    const [remainTime, setRemainTime] = useState(Math.floor((arrival - new Date().getTime())/1000));
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
     const [isArrival, setIsArrival] = useState(true);
+    const [pressedTime, setPressedTime] = useState(new Date().getTime());
 
     useEffect(() => {
         let interval;
         if (isRunning){
             Animated.timing(animatedValue, {
             toValue: height,
-            duration: remainTime + (59 * 1000), // 남은 시간 넣어야함. 
+            duration: remainTime * 1000, // 남은 시간 넣어야함. 
             useNativeDriver: false,
         
         }).start();
         interval = setInterval(() => {
             setTime((prevTime) => {
-                return prevTime + 1;
+                return Math.floor((new Date().getTime() - pressedTime) / 1000);
             })
         }, 1000);
         return () => clearInterval(interval);
@@ -37,8 +38,9 @@ export default function Moving(){
     }, [isRunning]);
 
     const pressDepart = () => {
+        setPressedTime(new Date().getTime());
         setIsArrival(false);
-        setRemainTime(arrival - new Date().getTime());
+        setRemainTime(Math.floor((arrival - new Date().getTime())/1000));
         setIsRunning(true);
         Animated.timing(animatedValue).stop();
     }
