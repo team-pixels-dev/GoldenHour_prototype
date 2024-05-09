@@ -11,14 +11,22 @@ import {setSavedWashingTime} from '../../stores/ready-time-slice'
 import { useNavigation } from '@react-navigation/native';
 
 export default function Shower(){
+    // 씻기를 완료한 시점(ms)
     const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
+    // 씻기를 위해 할당된 시간(초)
+    const washingTime = useSelector((state) => state.readyTime.washingTime) * 60;
+    // 화면이 로드된 시점에서 씻기를 완료하기까지 남은 시간(초)
+    const currentRemainTime = Math.floor((washingCompletedTime - new Date().getTime())/(1000));
+    // 전체 씻기 시간에서 소비한 시간의 비율
+    const washingTimePersent = 1 - (currentRemainTime/washingTime);
 
     const [timeLeft, setTimeLeft] = useState();
-    const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
+    // const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
+    const [time, setTime] = useState(washingTime);
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
-    const animatedValue = useRef(new Animated.Value(0)).current;
+    const animatedValue = useRef(new Animated.Value(SCREEN_HEIGHT * washingTimePersent)).current;
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
