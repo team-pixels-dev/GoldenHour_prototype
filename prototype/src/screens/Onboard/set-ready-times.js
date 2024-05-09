@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
-import { setTotalReadyCompletedTime, setWashingCompletedTime, setEtcCompletedTime} from '../../stores/ready-time-slice';
+import * as readyTimeSlice from '../../stores/ready-time-slice';
 
 export default function SetReadyTimes() {
 
@@ -15,10 +15,6 @@ export default function SetReadyTimes() {
     let currentTime = new Date().getTime();
     // 출발시간 ms
     const departure = useSelector((state) => state.time.departure);
-    // const totalReadyCompletedTime = useSelector((state) => state.readyTime.totalReadyCompletedTime);
-    // const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
-    // const etcCompletedTime = useSelector((state) => state.readyTime.etcCompletedTime);
-    // const spareTime_ = useSelector((state) => state.readyTime.spareTime);
     const dispatch = useDispatch();
 
     function getTimeString(dateObj){
@@ -65,9 +61,12 @@ export default function SetReadyTimes() {
     }
     function start(){
         currentTime = new Date().getTime()
-        dispatch(setTotalReadyCompletedTime(currentTime + (totalReadyTime*1000*60)));
-        dispatch(setWashingCompletedTime(currentTime + (washingTime*1000*60)));
-        dispatch(setEtcCompletedTime(currentTime + ((washingTime + etcTime)*1000*60)));
+        dispatch(readyTimeSlice.setTotalReadyCompletedTime(currentTime + (totalReadyTime*1000*60)));
+        dispatch(readyTimeSlice.setWashingCompletedTime(currentTime + (washingTime*1000*60)));
+        dispatch(readyTimeSlice.setEtcCompletedTime(currentTime + ((washingTime + etcTime)*1000*60)));
+        dispatch(readyTimeSlice.setTotalReadyTime(totalReadyTime));
+        dispatch(readyTimeSlice.setWashingTime(washingTime));
+        dispatch(readyTimeSlice.setEtcTime(etcTime));
         navigation.navigate('Shower');
         hapticsFeedback();
     }
