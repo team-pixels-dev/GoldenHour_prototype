@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { Platform, Pressable, StyleSheet, View} from 'react-native';
 import RegularText from '../../component/ui/regular-text'
 import FullSizeButton from '../../component/ui/buttons/full-size-button';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
 import { useDispatch, useSelector } from 'react-redux';
 import { setArrival, setDeparture } from '../../stores/time-select-slice';
+import CustomAnimatedPressable from '../../component/ui/buttons/animated-pressable';
 
 export default function Onboard_2() {
     const dispatch = useDispatch();
@@ -17,25 +18,25 @@ export default function Onboard_2() {
     const [arrival_, setArrival_] = useState(new Date(departure_.getTime() + (1000*60*60)));
     const [isCorrect, setIsCorrect] = useState(true);
     const [buttonText, setButtonText] = useState('다음');
+    const [showDep, setShowDep] = useState(false);
+    const [showArr, setShowArr] = useState(false);
 
     useEffect(()=>{
         validation();
     },[])
 
-
     const arrivalChange = (event, selectedTime) => {
         if (selectedTime){
-            // const formattedTime = selectedTime.toLocaleTimeString();
-            validation();
             setArrival_(selectedTime);
+            validation(selectedTime, departure_);
+            if(showArr) setShowArr(false);
         }
     }
     const departureChange = (event, selectedTime) => {
         if (selectedTime){
-            // const formattedTime = selectedTime.toLocaleTimeString();
-            // console.log()
-            validation();
             setDeparture_(selectedTime);
+            validation(arrival_, selectedTime);
+            if(showDep) setShowDep(false);
         }
     }
     const nextScreen = () => {
@@ -44,11 +45,11 @@ export default function Onboard_2() {
         navigation.navigate('set_ready_time');
     }
 
-    const validation = () => {
-        if(arrival_ <= departure_){
+    const validation = (arrival, departure ) => {
+        if(arrival <= departure){
             setIsCorrect(false);
             setButtonText('도착시간이 출발시간보다 빠릅니다.');
-        } else if (departure_ <= new Date().getTime()){
+        } else if (departure <= new Date().getTime()){
             setIsCorrect(false);
             setButtonText('출발시간이 현재시간보다 빠릅니다.');
         } else {
@@ -57,13 +58,43 @@ export default function Onboard_2() {
         }
     }
 
+    const showMode = (value, onChange) => {
+        DateTimePickerAndroid.open({
+            value: value,
+            onChange,
+            mode: 'time',
+            display: 'spinner',
+            is24Hour: true,
+          });
+    }
+
+    const getTimeFormat = (date) => {
+        let timeString = date.getHours().toString().padStart(2, '0') 
+        + ':' + date.getMinutes().toString().padStart(2, '0')  + ' ';
+        if (date.getHours() >= 12)
+            timeString += 'PM'
+        else
+            timeString += 'AM'
+        return timeString
+    }
+
+    const timePicker = (value, onChange, element = '') => {
+        if(Platform.OS === 'ios')
+            return(
+                <DateTimePicker style={styles.picker} value={value} mode='time' display='compact' onChange={onChange} is24Hour={true} view={<View><RegularText>hello</RegularText></View>}/>
+            )
+        else
+            return(
+                <CustomAnimatedPressable style={styles.picker} onPress={() => showMode(value, onChange)}><RegularText style={{fontSize:wScale(28)}}>{getTimeFormat(value)}</RegularText></CustomAnimatedPressable>
+            );
+    }
     
     return(
         <View style={styles.container}>
-            <RegularText style={styles.script}>목표 도착시각 설정</RegularText>
-            <DateTimePicker style={styles.picker} value={arrival_} mode={'time'} onChange={arrivalChange} is24Hour={true}/>
-            <RegularText style={styles.script}>이동 출발시각 설정</RegularText>
-            <DateTimePicker style={styles.picker} value={departure_} mode='time' onChange={departureChange}is24Hour={true}/>
+            <RegularText style={styles.script1}>목표 도착시각 설정</RegularText>
+            {timePicker(arrival_, arrivalChange)}
+            <RegularText style={styles.script2}>이동 출발시각 설정</RegularText>
+            {timePicker(departure_, departureChange)}
             <FullSizeButton onPress={nextScreen} style={[styles.button, {color:'red'}]} disabled={!isCorrect}>{buttonText}</FullSizeButton>
         </View>
     )
@@ -76,13 +107,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'white',
     },
-    script:{
-        marginTop:hScale(75),
+    script1:{
         fontFamily:'Pretendard-Bold',
-        fontSize:hScale(25)
+        fontSize:hScale(30),
+        marginTop:hScale(-45)
+    },
+    script2:{
+        marginTop:hScale(120),
+        fontFamily:'Pretendard-Bold',
+        fontSize:hScale(30)
     },
     picker:{
-        marginTop:hScale(40),
+        marginTop:hScale(75),
+        fontSize:wScale(28),
+        ...Platform.select({
+            android: {
+                width:wScale(150),
+                backgroundColor:'#EBEBEB',
+                borderRadius:8,
+                justifyContent:'center',
+                alignItems:'center'
+            },
+            ios: {
+                transform: [{ scale: 1.2, }]
+            }
+        })
+        
         
     },
     button:{

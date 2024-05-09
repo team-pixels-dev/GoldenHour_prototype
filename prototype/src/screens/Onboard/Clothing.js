@@ -29,7 +29,7 @@ export default function Clothing(){
         let interval;
         if (isRunning){
             Animated.timing(animatedValue, {
-            toValue: height,
+            toValue: SCREEN_HEIGHT,
             duration: time * 1000 ,
             useNativeDriver: false,
         
@@ -91,7 +91,7 @@ export default function Clothing(){
                 <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
                 <CircleButton children='완료' color="#7AFFB7" onPress={() => onPressModalOpen()}/>
             </View>
-            <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, height],outputRange: [0,height],})}]} />
+            <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} />
     
             <Modal animationType='slide' visible = {modalOpen} transparent={true}>
             <View style={styles.modalContainer}>

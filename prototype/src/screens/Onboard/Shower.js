@@ -1,4 +1,4 @@
-import { Modal, Animated, StyleSheet, Text, View, Image, Button, Dimensions } from 'react-native';
+import { Platform, Modal, Animated, StyleSheet, View, Image, Dimensions, SafeAreaView } from 'react-native';
 import {wScale, hScale, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../utils/scaling';
 import RegularText from '../../component/ui/regular-text'
 import react, {useEffect,useRef, useState} from 'react';
@@ -9,7 +9,6 @@ import ModalBtn from '../../component/ui/buttons/modal-button';
 import { useSelector, useDispatch } from 'react-redux';
 import {setSavedWashingTime} from '../../stores/ready-time-slice'
 import { useNavigation } from '@react-navigation/native';
-const {height} = Dimensions.get('window');
 
 export default function Shower(){
     const washingCompletedTime = useSelector((state) => state.readyTime.washingCompletedTime);
@@ -28,7 +27,7 @@ export default function Shower(){
         let interval;
         if (isRunning){
             Animated.timing(animatedValue, {
-            toValue: height,
+            toValue: SCREEN_HEIGHT,
             duration: time * 1000 ,
             useNativeDriver: false,
         
@@ -92,39 +91,39 @@ export default function Shower(){
     }
 
     return(
-        <View style={styles.background}>
-            <View style={styles.component}>
-                <RegularText style={styles.text}>지금은 씻는 시간 !</RegularText>
-                <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
-                <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
+            <View style={styles.background}>
+                <View style={styles.component}>
+                    <RegularText style={styles.text}>지금은 씻는 시간 !</RegularText>
+                    <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
+                    <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
+                </View>
+                <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} />
+        
+                <Modal animationType='slide' visible = {modalOpen} transparent={true}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalBack}/>
+                    <View style={styles.modal}>
+                        <Image source={Success} style={styles.img}></Image>
+                        <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
+                        <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
+                    </View>
+                    </View>
+                </Modal>
+                
+                <Modal animationType='slide' visible = {failModalOpen} transparent={true}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalBack}/>
+                    <View style={styles.modal}>
+                        <Image source={Success} style={styles.img}></Image>
+                        <RegularText style={styles.modalText}>지각 예정이에요..!</RegularText>
+                        <RegularText style={styles.modalText}>서둘러 주세요.</RegularText>
+                        <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
+                    </View>
+                    </View>
+                </Modal>
+                
+                
             </View>
-            <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, height],outputRange: [0,height],})}]} />
-    
-            <Modal animationType='slide' visible = {modalOpen} transparent={true}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalBack}/>
-                <View style={styles.modal}>
-                    <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>{formattedTime2(time)} 아끼셨네요</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
-                </View>
-                </View>
-            </Modal>
-            
-            <Modal animationType='slide' visible = {failModalOpen} transparent={true}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalBack}/>
-                <View style={styles.modal}>
-                    <Image source={Success} style={styles.img}></Image>
-                    <RegularText style={styles.modalText}>지각 예정이에요..!</RegularText>
-                    <RegularText style={styles.modalText}>서둘러 주세요.</RegularText>
-                    <ModalBtn style={styles.btn}children='다음' onPress={onModalNext}/>
-                </View>
-                </View>
-            </Modal>
-            
-            
-        </View>
     )
     
 }
@@ -132,14 +131,16 @@ const styles = StyleSheet.create({
     background: {
         backgroundColor: "#FFFFFF",
         flex: 1,
-        width:'100%',
-        height: '100%',
+        // width:'100%',
+        // height: '100%',
         alignItems: 'center',
         flexDirection: 'column-reverse',
     },
     colorback: {
         backgroundColor: "#7AF7FF",
-        width:'100%',
+        // flex: 1,
+        // width:hScale(SCREEN_HEIGHT),
+        width: '100%',
         zIndex: 1
     },
     text: {
