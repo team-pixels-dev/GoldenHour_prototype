@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     },
     text1: {
         fontFamily: 'Pretendard-Bold',
-        marginBottom: hScale(280),
+        marginBottom: hScale(250),
         marginTop: hScale(20)
     },
     component : {
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     BtnText1: {
         fontSize: wScale(15),
         marginBottom: hScale(5),
+        marginTop: hScale(-58),
         fontWeight: '600'
     },
     BtnText2: {
