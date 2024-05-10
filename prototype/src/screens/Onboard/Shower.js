@@ -30,7 +30,9 @@ export default function Shower(){
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
-    const [animatedValue, setAnimatedValue] = useState(new Animated.Value(SCREEN_HEIGHT * washingTimePersent));
+    // const [animatedValue, setAnimatedValue] = useState(new Animated.Value(SCREEN_HEIGHT * washingTimePersent));
+    // const [animatedValue, setAnimatedValue] = useState(new Animated.Value(SCREEN_HEIGHT * washingTimePersent));
+    animatedValue = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
@@ -48,7 +50,7 @@ export default function Shower(){
             const persent = 1 - (remain/washingTime);
             setWashingTimePersent(persent);
             const animeatedValue_ = new Animated.Value(SCREEN_HEIGHT * persent);
-            setAnimatedValue(new Animated.Value(SCREEN_HEIGHT * persent));
+            // setAnimatedValue(new Animated.Value(SCREEN_HEIGHT * persent));
             // console.log('남은 시간 : '+ remain);
           }
     
@@ -67,39 +69,39 @@ export default function Shower(){
         // let interval;
         let interval2;
         if (isRunning){
-            // Animated.timing(animatedValue, {
-            // toValue: SCREEN_HEIGHT,
-            // duration: time * 1000 ,
-            // useNativeDriver: false,
-        // }).start();
-        // interval = setInterval(() => {
-        //     setTime((prevTime) => {
-        //         if(prevTime <= 1){
-        //             clearInterval(interval);
-        //             setIsRunning(false);
-        //             autoModalOpen();
-        //             return 0;
-        //         }
-        //         return prevTime -1;
-        //     })
-        // }, 1000);
-        interval2 = setInterval(() => {
-            const remain = (washingCompletedTime - new Date().getTime())/(1000);
-            setCurrentRemainTime(remain);
-            const persent = 1 - (remain/washingTime);
-            setWashingTimePersent(persent);
+            Animated.timing(animatedValue, {
+            toValue: SCREEN_HEIGHT,
+            duration: time * 1000 ,
+            useNativeDriver: false,
+        }).start();
+        interval = setInterval(() => {
             setTime((prevTime) => {
                 if(prevTime <= 1){
-                    clearInterval(interval2);
+                    clearInterval(interval);
                     setIsRunning(false);
                     autoModalOpen();
                     return 0;
                 }
                 return Math.floor((washingCompletedTime - new Date().getTime())/(1000));
-            })
-        }, 10);
+            });
+        }, 1000);
+        // interval2 = setInterval(() => {
+        //     const remain = (washingCompletedTime - new Date().getTime())/(1000);
+        //     setCurrentRemainTime(remain);
+        //     const persent = 1 - (remain/washingTime);
+        //     setWashingTimePersent(persent);
+        //     setTime((prevTime) => {
+        //         if(prevTime <= 1){
+        //             clearInterval(interval2);
+        //             setIsRunning(false);
+        //             autoModalOpen();
+        //             return 0;
+        //         }
+        //         return Math.floor((washingCompletedTime - new Date().getTime())/(1000));
+        //     })
+        // }, 10);
         return () => {
-            // clearInterval(interval);
+            clearInterval(interval);
             // clearInterval(interval2);
         }
         
@@ -155,8 +157,8 @@ export default function Shower(){
                     <RegularText style={styles.text1}>{formattedTime(time)}</RegularText>
                     <CircleButton children='완료' color="#7AF7FF" onPress={() => onPressModalOpen()}/>
                 </View>
-                {/* <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} /> */}
-                <View style={[styles.colorback, {height:SCREEN_HEIGHT * washingTimePersent}]} /> 
+                <Animated.View style={[styles.colorback,{ height: animatedValue.interpolate({inputRange: [0, SCREEN_HEIGHT],outputRange: [0,SCREEN_HEIGHT],})}]} />
+                {/*<View style={[styles.colorback, {height:SCREEN_HEIGHT * washingTimePersent}]} /> */}
                 <Modal animationType='slide' visible = {modalOpen} transparent={true}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalBack}/>
