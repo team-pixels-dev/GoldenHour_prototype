@@ -16,7 +16,7 @@ export default function Clothing(){
     const savedWasingTime = useSelector((state) => state.readyTime.savedWasingTime);
     const etcCompletedTime = useSelector((state) => state.readyTime.etcCompletedTime);
 
-    const [time, setTime] = useState(Math.floor((etcCompletedTime - new Date().getTime())/(1000) - savedWasingTime));
+    const [time, setTime] = useState(Math.floor((etcCompletedTime - new Date().getTime())/(1000)) - savedWasingTime);
     const [isRunning, setIsRunning] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [failModalOpen, setFailModalOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function Clothing(){
                     autoModalOpen();
                     return 0;
                 }
-                return prevTime -1;
+                return Math.floor((etcCompletedTime - new Date().getTime())/(1000)) - savedWasingTime;
             })
         }, 1000);
         return () => clearInterval(interval);
