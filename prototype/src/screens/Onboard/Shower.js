@@ -20,9 +20,9 @@ export default function Shower(){
     // 씻기를 위해 할당된 시간(초)
     const washingTime = useSelector((state) => state.readyTime.washingTime) * 60;
     // 화면이 로드된 시점에서 씻기를 완료하기까지 남은 시간(초)
-    const [currentRemainTime, setCurrentRemainTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
+    // const [currentRemainTime, setCurrentRemainTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
     // 전체 씻기 시간에서 소비한 시간의 비율
-    const [washingTimePersent, setWashingTimePersent] = useState(1 - (currentRemainTime/washingTime));
+    // const [washingTimePersent, setWashingTimePersent] = useState(1 - (currentRemainTime/washingTime));
 
     const [timeLeft, setTimeLeft] = useState();
     // const [time, setTime] = useState(Math.floor((washingCompletedTime - new Date().getTime())/(1000)));
@@ -66,8 +66,8 @@ export default function Shower(){
 
     
     useEffect(() => {
-        // let interval;
-        let interval2;
+        let interval;
+        // let interval2;
         if (isRunning){
             Animated.timing(animatedValue, {
             toValue: SCREEN_HEIGHT,
