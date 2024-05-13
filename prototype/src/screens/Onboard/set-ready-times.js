@@ -112,14 +112,6 @@ export default function SetReadyTimes() {
         );
     }
 
-    
-
-    // useEffect(()=>{
-    //     setInterval(()=>{
-    //         console.log(new Date());
-    //     }, 1000)
-    // },[])
-
     return(
         <View style={styles.container}>
             <View style={styles.content}>

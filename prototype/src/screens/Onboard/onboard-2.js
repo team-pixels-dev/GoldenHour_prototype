@@ -40,21 +40,26 @@ export default function Onboard_2() {
         }
     }
     const nextScreen = () => {
-        dispatch(setDeparture(departure_.getTime()));
-        dispatch(setArrival(arrival_.getTime()));
-        navigation.navigate('set_ready_time');
+        if(validation()){
+            dispatch(setDeparture(departure_.getTime()));
+            dispatch(setArrival(arrival_.getTime()));
+            navigation.navigate('set_ready_time');
+        }
     }
 
-    const validation = (arrival, departure ) => {
+    const validation = (arrival = arrival_, departure = departure_) => {
         if(arrival <= departure){
             setIsCorrect(false);
             setButtonText('도착시간이 출발시간보다 빠릅니다.');
+            return false;
         } else if (departure <= new Date().getTime()){
             setIsCorrect(false);
             setButtonText('출발시간이 현재시간보다 빠릅니다.');
+            return false;
         } else {
             setIsCorrect(true);
-            setButtonText('다음')
+            setButtonText('다음');
+            return true;
         }
     }
 
