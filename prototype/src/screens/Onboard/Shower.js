@@ -45,11 +45,11 @@ export default function Shower(){
           ) {
             console.log('App has come to the foreground!');
             // 앱의 상태가 변경될 시점 기준으로 씻기를 완료하기까지 남은 시간(sec)
-            const remain = Math.floor((washingCompletedTime - new Date().getTime())/(1000));
-            setCurrentRemainTime(remain);
-            const persent = 1 - (remain/washingTime);
-            setWashingTimePersent(persent);
-            const animeatedValue_ = new Animated.Value(SCREEN_HEIGHT * persent);
+            // const remain = Math.floor((washingCompletedTime - new Date().getTime())/(1000));
+            // setCurrentRemainTime(remain);
+            // const persent = 1 - (remain/washingTime);
+            // setWashingTimePersent(persent);
+            // const animeatedValue_ = new Animated.Value(SCREEN_HEIGHT * persent);
             // setAnimatedValue(new Animated.Value(SCREEN_HEIGHT * persent));
             // console.log('남은 시간 : '+ remain);
           }
